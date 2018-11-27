@@ -117,7 +117,10 @@
                             </template>
                         </tr>
 
-                        <slot v-else :row="row" :index="index"></slot>
+                        <slot
+                            v-else
+                            :row="row"
+                            :index="index"/>
 
                         <!-- Do not add `key` here (breaks details) -->
                         <!-- eslint-disable-next-line -->
