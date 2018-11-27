@@ -63,6 +63,7 @@
                     <template v-for="(row, index) in visibleData">
                         <tr
                             :key="index"
+                            v-if="!customRow"
                             :class="[rowClass(row, index), {
                                 'is-selected': row === selected,
                                 'is-checked': isRowChecked(row)
@@ -116,10 +117,13 @@
                             </template>
                         </tr>
 
+                        <slot v-else :row="row" :index="index"></slot>
+
                         <!-- Do not add `key` here (breaks details) -->
                         <!-- eslint-disable-next-line -->
                         <tr
                             v-if="detailed && isVisibleDetailRow(row)"
+                            :key="index"
                             class="detail">
                             <td :colspan="columnCount">
                                 <div class="detail-container">
@@ -259,7 +263,11 @@
                 type: [Number, String],
                 default: 0
             },
-            iconPack: String
+            iconPack: String,
+            customRow: {
+                type: Boolean,
+                default: false
+            }
         },
         data() {
             return {
