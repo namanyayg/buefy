@@ -40,9 +40,11 @@
             }
         },
         methods: {
-            addRefToTable() {
+            /**
+             * Find the correct parent
+             */
+            getCorrectParent () {
                 let parent
-
                 if (!this.$parent.$data._isTable) {
                     if (this.$parent.$parent.customRow) {
                         parent = this.$parent.$parent
@@ -54,7 +56,11 @@
                 } else {
                     parent = this.$parent
                 }
+                return parent
+            },
 
+            addRefToTable() {
+                const $parent = this.getCorrectParent()
                 if (this.internal) return
 
                 // Since we're using scoped prop the columns gonna be multiplied,
@@ -71,10 +77,12 @@
             this.addRefToTable()
         },
         beforeDestroy() {
-            const index = this.$parent.newColumns.map(
+            let $parent = this.getCorrectParent()
+
+            const index = $parent.newColumns.map(
                 (column) => column.newKey).indexOf(this.newKey)
             if (index >= 0) {
-                this.$parent.newColumns.splice(index, 1)
+                $parent.newColumns.splice(index, 1)
             }
         }
     }
